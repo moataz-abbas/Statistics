@@ -102,4 +102,3 @@ def cdf(a, b, mu=0, s=1, n=10000):
 
 def skew(lst):
 	return (3*(mean(lst)-median(lst)))/std(lst)
-
