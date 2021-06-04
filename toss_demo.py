@@ -32,5 +32,5 @@ for rect, label in zip(rects, labels):
 	height = rect.get_height()
 	ax.text(rect.get_x() + rect.get_width() / 2, height + 5, label, ha='center', va='bottom')
 
-
+print(f"mean: {st.mean(y)} , median: {st.median(y)}, mode: {st.mode(y)}, std: {st.std(y)}, skewiness: {st.skew(y)}, cdf: {st.cdf(8,10, st.mean(y), st.std(y))}")
 plt.show()
