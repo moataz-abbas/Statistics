@@ -1,7 +1,3 @@
-#pylint:disable=C0116
-#pylint:disable=W0622
-#pylint:disable=C0103
-#pylint:disable=R1705
 from math import sqrt, pi, e
 from collections import Counter
 import numpy as np
@@ -88,7 +84,8 @@ def pdf(x, mu, s):
 def cdf(a, b, mu=0, s=1, n=10000):
 	"""
 	# a and b are the start and end values you want to predict the probability of happening
-	# mu and s are the mean and std of the normal distribution curve, the default values draw a standard model of mean zero and std of 1.
+	# mu and s are the mean and std of the normal distribution curve, 
+	#     the default values draw a standard model of mean zero and std of 1.
 	# n reflects the density of the plot to increase the accuracy of the results
 	"""
 	dx= (b-a)/n
