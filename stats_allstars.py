@@ -3,10 +3,10 @@ from collections import Counter
 import numpy as np
 
 
-def median(list):
-	n=len(list) # total no. of elements
+def median(lst):
+	n=len(lst) # total no. of elements
 	mid = int(n/2) # get the mid point
-	x = sorted(list) # sort the list
+	x = sorted(lst) # sort the lst
 	
 	def even(lst_e, n):
 		""" function to deal with even series"""
@@ -21,34 +21,43 @@ def median(list):
 	else:
 		return odd(x, mid)
 
-def mean(list):
-	n= len(list)
-	return sum(list)/n
+def mean(lst):
+	n= len(lst)
+	return sum(lst)/n
 	
-def var(list):
-	mu= mean(list)
-	return  sum((x - mu)**2 for x in list)/(len(list)-1)
+def var(lst):
+	mu= mean(lst)
+	return  sum((x - mu)**2 for x in lst)/(len(lst)-1)
 
-def std(list):
-	return sqrt(var(list))
+def var_p(lst):
+    """ population variance """
+    mu= mean(lst)
+    return  sum((x - mu)**2 for x in lst)/(len(lst))
+
+def std_p(lst):
+    """ population stdev """
+    return sqrt(var_p(lst))
+
+def std(lst):
+	return sqrt(var(lst))
 	
-def std_error(list):
-	return std(list)/(sqrt(len(list)))
+def std_error(lst):
+	return std(lst)/(sqrt(len(lst)))
 
-def dof(list):
-	return len(list) -1
+def dof(lst):
+	return len(lst) -1
 
 def weighted_mean(lst):
 	w = Counter(lst)
 	return sum([x*y for x,y in w.items()])/len(lst)
 	
 def mode(lst):
-	if not lst: #To check if list is empty
-		return "The list is empty!"
+	if not lst: #To check if lst is empty
+		return "The lst is empty!"
 	w=Counter(lst)
 	_,i = w.most_common(1)[0]
-	v = {v for _,v in w.items()} # Set comprehension to get the list of unique frequencies
-	m= [x for x,y in w.items() if y == i] # get the list of most common elements
+	v = {v for _,v in w.items()} # Set comprehension to get the lst of unique frequencies
+	m= [x for x,y in w.items() if y == i] # get the lst of most common elements
 	if len(v) > 1: # check that we have a mode, and display it according to its number
 		return m
 	else:
@@ -69,9 +78,10 @@ def r_xy(x,y):
 	return (n*exy - ex*ey)/(sqrt((n*ex2 - ex**2)*(n*ey2 - ey**2)))
 	
 
-def z_score(x,lst):
+def z_score(x, mu, std):
 	""" Z score """
-	return (x - mean(lst))/std(lst)
+	return (x - mu)/std
+
 	
 	
 def pdf(x, mu, s):
@@ -101,4 +111,13 @@ def cdf(a, b, mu=0, s=1, n=10000):
 
 
 def skew(lst):
-	return (3*(mean(lst)-median(lst)))/std(lst)
+    """ Measure of skewiness"""
+    return (3*(mean(lst)-median(lst)))/std(lst)
+
+
+def kurt(lst):
+    """ Measure of kurtosis """
+    m = mean(lst)
+    s = std_p(lst)
+    ex = [  (z_score(x, m, s))**4 for x in lst]
+    return mean(ex)-3
