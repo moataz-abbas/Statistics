@@ -1,6 +1,8 @@
 from die import Die
 from collections import Counter
 import matplotlib.pyplot as plt
+import stats_all as st
+
 
 
 die = Die(1)
