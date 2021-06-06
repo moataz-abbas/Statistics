@@ -38,7 +38,7 @@ for i in range(n):
 #n, bins, patches =  plt.hist(y, bins=11, density= True)
 #print(n, bins)
 
-#plt.plot(bins,[st.pdf(i, st.mean(bins), st.std(bins)) for i in range(len(bins)) ])
+plt.plot(bins,[st.pdf(i, st.mean(bins), st.std(bins)) for i in range(len(bins)) ])
 mu = st.mean(y)
 std = st.std(y)
 x= np.linspace(0,10, len(y))
