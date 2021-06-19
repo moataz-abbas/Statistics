@@ -61,9 +61,9 @@ def f_table(d1, d2, p=0.05, a=7, n=10**6):
     res = a - (c * dx)
     return res
 
-def f_p(d1, d2, p=1.0, a=7, n=10**6):
+def f_p(d1, d2, p=1.0, a=7, n = 10**6):
     
-    x = list(np.linspace(10**-4, a, n))
+    x = list(np.linspace(10**-2, a, n))
     #print(x)
     dx = a/n
     #print(f"dx: {a/n}")
@@ -82,14 +82,14 @@ def f_p(d1, d2, p=1.0, a=7, n=10**6):
 
 
 
-d1= 2
-d2= 3
+d1= 6
+d2= 40
 p= 1
-a= 10000
+a= 10**6
 
 
-x = np.linspace(10**-3, 3, 100)
-s=f_p(d1, d2, p=1, a=10000, n=10**7)
+x = np.linspace(10**-3, 3, 1000)
+s=f_p(d1, d2, p=1, a=10000, n=10**6)
 print(s)
 f = f_table(d1, d2, p= 0.05, a= s)
 print(f)
