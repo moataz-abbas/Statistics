@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jun 26 18:52:39 2021
+
+@author: mizo_
+"""
+
 #pylint:disable=W0622
 import stats_v_6 as st
 from math import sqrt
@@ -52,23 +59,23 @@ print(f"pearson r = {r}")
 #sr= src(rxy, n1)
 #print(f"sr = {sr}")
 
-def r_crit(**vars):
-	""" values of Correlation coefficient needed for rejection of null hypothesis (critical value of r)
-	degrees of freedom = n of the pairs - 2
-	p = risk of significance, default 0.05
-	tails = tails of the distribution, default (2)
-	"""
-	df = vars.get('df', 1)
-	p = vars.get('p', 0.05)
-	tail = vars.get('tail', 2)
-	#print(df, p, tail)
-	t= st.t_table(df, p, tail)
-	return sqrt((t**2)/(t**2 + df))
+# def r_crit(**vars):
+# 	""" values of Correlation coefficient needed for rejection of null hypothesis (critical value of r)
+# 	degrees of freedom = n of the pairs - 2
+# 	p = risk of significance, default 0.05
+# 	tails = tails of the distribution, default (2)
+# 	"""
+# 	df = vars.get('df', 1)
+# 	p = vars.get('p', 0.05)
+# 	tail = vars.get('tail', 2)
+# 	#print(df, p, tail)
+# 	t= st.t_table(**vars)
+# 	return sqrt((t**2)/(t**2 + df))
 
-dof=30
+dof=25
 
-rt = st.r_crit(df = dof)
-print(f"r crit: {rt}")
+rc = st.r_crit(df = dof)
+print(f"r crit: {rc}")
 
 
 #def reject_null_h_f(func, d1, d2, p=0.05, a=1000, n=10**6 ):
@@ -89,7 +96,7 @@ def reject_null_h_all(val, func, **vars):
 
 
 
-print(st.reject_null_h_all(val=r, func=r_crit, df= dof, p= 0.05, tail= 2))
+print(st.reject_null_h_all(val=r, func=st.r_crit, df= dof, p= 0.05, tail= 2))
 
 
 
