@@ -725,11 +725,6 @@ def chi_cdf(a, b, df, n=1000):
 	return dx * ( Efxk + outers)
 
 def chi_range(df):
-	""" 
-	to return the upper an lower valies of significance of any chi squared curve according to dof
-	"""
-	#define the center of the chi curve
-	# as a starting point
 	if df <3:
 		i = j = 0.1
 	else:
@@ -742,7 +737,7 @@ def chi_range(df):
 	x=50
 	while x > 10**-g:
 		i-= 0.0001
-		if i < 0.00001: # prevent i from going to zero
+		if i < 0.0001:
 			break
 		x = chi_pdf(df, i)
 	return i, j
@@ -762,24 +757,96 @@ def chi_crit(**vars):
 	
 	p = p/tail
 	i,j = chi_range(df)
-	print(i,j)
+	
 	l = list(np.linspace(i, j, n)) 
 	u = list(np.linspace(j, i, n)) 
 	dx = (j-i)/n
 	y=0
 	a=b=0
-	for il in l: # lower tail of curve
+	for il in l:
 		y+= dx * chi_pdf(df, il)
 		if y >= p:
 			break
 		a+=1
 	y=0
-	for iu in u: # upper tail
+	for iu in u:
 		y+= dx * chi_pdf(df, iu)
 		if y >= p:
 			break
 		b+=1
-		
 	a = i + (a*dx)
 	b = j - (b*dx)
 	return round(a, 4), round(b, 4)
+	
+def chi_gof(var):
+	"""chi goodness of fit obtained value (X^2)"""
+	if isinstance(var, list):
+		n= len(var)
+		
+	s = sum(var)
+	ex = s/n #expected value
+	
+	X2 = sum([((o - ex)**2)/ex for o in var])
+	
+	return X2
+	
+def chi_indep(var):
+	"""
+	Test of independence Chi-Square
+	(chi-square test of association)
+	Null hypothesis is accepted, in the case that the data sets are independent. i.e. the the added layer(s) of parameters doesnt affect the data distribution, = data is distributed randomely,, if the obtained value is less extreme than chi crit value.
+	"""
+	m=len(var)
+	n=len(var[0])
+	rs = [0]*m
+	cs = [0]*n
+	i=0
+	for r in var:
+		j=0
+		for c in r:
+			rs[i] += c
+			cs[j] += c
+			j+=1
+		i+=1
+	es= sum(rs) #total sum
+	x= [rs, cs]
+	ex = np.zeros((m,n))
+	i=j=0
+	for i in range(m):
+		for j in range(n):
+			ex[i][j] = (x[0][i] * x[1][j])/es
+		
+	chi = [((var[i][j]-ex[i][j])**2)/ex[i][j] for i in range(m) for j in range(n)]
+	return sum(chi)
+	
+def chi_dof(var):
+		if isinstance(var[0], list):
+			m=len(var)
+			n=len(var[0])
+			for i in range(m):
+				assert len(var[i])==n, "Rows of data should contain equal number of values!"
+			return (m-1)*(n-1)
+		else:
+			return len(var)-1
+			
+def chi_p(x, df, n=1000):
+	i,j =chi_range(df)
+	ii = abs(i-x)
+	jj = abs(j-x)
+	if ii > jj:
+		a = x
+		b = j
+	else:
+		a = i
+		b = x
+	dx= (b-a)/n
+	ab= np.linspace(a,b,n)
+	Efxk=0
+	
+	for x in ab[1:-2]:
+			Efxk += chi_pdf(df, x)
+		
+	outers = (chi_pdf(df, ab[0]) 
+					+ chi_pdf(df, ab[-1]))/2
+	
+	return dx * ( Efxk + outers)
