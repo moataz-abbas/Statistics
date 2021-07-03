@@ -819,6 +819,7 @@ def chi_indep(var):
 	chi = [((var[i][j]-ex[i][j])**2)/ex[i][j] for i in range(m) for j in range(n)]
 	return sum(chi)
 	
+
 def chi_dof(var):
 		if isinstance(var[0], list):
 			m=len(var)
@@ -830,23 +831,26 @@ def chi_dof(var):
 			return len(var)-1
 			
 def chi_p(x, df, n=1000):
-	i,j =chi_range(df)
-	ii = abs(i-x)
-	jj = abs(j-x)
-	if ii > jj:
-		a = x
-		b = j
-	else:
-		a = i
-		b = x
-	dx= (b-a)/n
+	""" Asymptotic significance (level of significance)
+	returns the minimum of 2 levels of significance measured from both ends of the curve, to exclude the one measured away from the tails
+	"""
+	i, j =chi_range(df)
+	a = i
+	b = x
+	c= j
 	ab= np.linspace(a,b,n)
-	Efxk=0
-	
-	for x in ab[1:-2]:
-			Efxk += chi_pdf(df, x)
+	bc =np.linspace(b,c,n)
+	def auc(a, b, ab):
+		dx= (b-a)/n
+		Efxk=0
+		for x in ab[1:-2]:
+				Efxk += chi_pdf(df, x)
+		outers = (chi_pdf(df, ab[0]) 
+						+ chi_pdf(df, ab[-1]))/2
+		return dx * ( Efxk + outers)
 		
-	outers = (chi_pdf(df, ab[0]) 
-					+ chi_pdf(df, ab[-1]))/2
+	p1 = auc(a,b,ab)
+	p2= auc(b,c,bc)
 	
-	return dx * ( Efxk + outers)
+	return min(p1,p2)
+		
