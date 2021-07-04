@@ -815,17 +815,28 @@ def chi_crit(**vars):
 	return round(a, 4), round(b, 4)
 
 
-def chi_gof(vars):
-	"""chi goodness of fit obtained value (X^2)"""
-	if isinstance(vars, list):
-		n = len(vars)
-
-	s = sum(vars)
-	ex = s/n  # expected value
-
-	X2 = sum([((o - ex)**2)/ex for o in vars])
-
-	return X2
+def chi_gof(**vars):
+    """
+    chi goodness of fit obtained value (X^2):
+    =========================================
+    accepts arguments as a list of the observed results (ob)
+    and a list of expected results to compair (ex).
+    or only observed results and the expected result will calculated,
+    as equally divided proportions among the observed values 
+    
+    """
+    ob = vars.get('ob')   #observed values
+    ex = vars.get('ex', float(sum(ob)/len(ob))) #expected values
+    
+    
+    if isinstance(ex, float):
+        #convert the calculated expected vallue into 
+        #a list to fit the sum below
+        n = len(ob)
+        ex = [ex]*n
+    
+    X2 = sum([((o - e)**2)/e for o,e in zip(ob,ex)])
+    return X2
 
 
 def chi_indep(vars):
