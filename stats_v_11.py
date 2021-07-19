@@ -29,9 +29,9 @@ def median_iqr(lst):
     n = len(lst)  # total no. of elements
     mid = int(n/2)  # get the mid point
     if n % 2 == 0:  # if clause to check if series is even or odd
-        return 0, mid-1, mid, n
+        return 0, mid-1, mid, n-1
     else:
-        return 0, mid-1, mid+1, n
+        return 0, mid-1, mid+1, n-1
 
 def median_iqr_plt(lst):
     '''
@@ -42,9 +42,9 @@ def median_iqr_plt(lst):
     n = len(lst)  # total no. of elements
     mid = int(n/2)  # get the mid point
     if n % 2 == 0:  # if clause to check if series is even or odd
-        return 0, mid-1, mid, n
+        return 0, mid-1, mid, n-1
     else:
-        return 0, mid, mid, n
+        return 0, mid, mid, n-1
     
     
 def mean(lst):
