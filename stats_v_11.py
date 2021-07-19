@@ -20,8 +20,33 @@ def median(lst):
 		return even(x, mid)
 	else:
 		return odd(x, mid)
+    
+def median_iqr(lst):
+    '''
+    returns positions of the lower qartiles (Q1 and Q2)
+    and upper quartiles (Q3 and Q4)
+    '''
+    n = len(lst)  # total no. of elements
+    mid = int(n/2)  # get the mid point
+    if n % 2 == 0:  # if clause to check if series is even or odd
+        return 0, mid-1, mid, n
+    else:
+        return 0, mid-1, mid+1, n
 
-
+def median_iqr_plt(lst):
+    '''
+    according to matplotlib.pyplot boxplot
+    returns positions of the lower qartiles (Q1 and Q2)
+    and upper quartiles (Q3 and Q4)
+    '''
+    n = len(lst)  # total no. of elements
+    mid = int(n/2)  # get the mid point
+    if n % 2 == 0:  # if clause to check if series is even or odd
+        return 0, mid-1, mid, n
+    else:
+        return 0, mid, mid, n
+    
+    
 def mean(lst):
 	n = len(lst)
 	return sum(lst)/n
