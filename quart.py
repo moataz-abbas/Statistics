@@ -9,8 +9,8 @@ import stats_v_11 as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-d ='C:\Data-Science-with-Python-master\Chapter01\Data\Banking_Marketing.csv'
-dx2 = 'C:/Users/mizo_/Documents/abbasmd.com/workstation/Data science in python/Data-Science-with-Python-master/Data-Science-with-Python-master/Chapter01/german_credit_data.csv'
+d ='/storage/emulated/0/Python/Data science in python/Data-Science-with-Python-master/Data-Science-with-Python-master/Chapter01/Data/Banking_Marketing.csv'
+dx2 = '/storage/emulated/0/Python/Data science in python/Data-Science-with-Python-master/Data-Science-with-Python-master/Chapter01/Data/german_credit_data.csv'
 df = pd.read_csv(dx2, header = 0)
 
 #print(df.dtypes)
@@ -54,13 +54,30 @@ IQR = Q3-Q1
 #print(IQR)
 
 
-lw = q1 - 1.5 * iqr
-uw = q3 + 1.5 * iqr
+low = q1 - 1.5 * iqr
+up = q3 + 1.5 * iqr
 
-if lw <= min(x):
-    lw = min(x)
-if uw >= max(x):
-    uw = max(x)
+def maxi(items, i):
+    current = items[0]
+    for item in items:
+    	if item<=i and item > current:
+	            current = item
+    return current
+    
+def mini(items, i):
+    items = items[::-1]
+    current = items[0]
+    for item in items:
+    	if item>=i and item < current:
+	            current = item
+    return current
+
+uw = maxi(x, up)
+lw = mini(x, low )
+#if lw <= min(x):
+#    lw = min(x)
+#if uw >= max(x):
+#    uw = max(x)
     
 plt.axhline(lw, color= 'b', linestyle = '--', label = 'Low whisker' )
 plt.axhline(uw, color= 'k', linestyle = '--', label = 'Upper whisker' )
