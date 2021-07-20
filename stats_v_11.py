@@ -21,7 +21,7 @@ def median(lst):
 	else:
 		return odd(x, mid)
     
-def median_iqr(lst):
+def median_divid(lst):
     '''
     returns positions of the lower qartiles (Q1 and Q2)
     and upper quartiles (Q3 and Q4)
@@ -33,9 +33,10 @@ def median_iqr(lst):
     else:
         return 0, mid-1, mid+1, n-1
 
-def median_iqr_plt(lst):
+def median_divid_plt(lst):
     '''
     according to matplotlib.pyplot boxplot
+    meduan value is included in odd sample sets.
     returns positions of the lower qartiles (Q1 and Q2)
     and upper quartiles (Q3 and Q4)
     '''
