@@ -1032,9 +1032,8 @@ def boxplots(d):
     plt.axhline(q3, color= 'g', linestyle = '--', label = 'Q3' )
     plt.axhline(q2, color= 'y', linestyle = '--', label = 'Median' )
     plt.axhline(q1, color= 'g', linestyle = '--', label = 'Q1' )
-    plt.axhline(lw, color= 'r', linestyle = '-', label = 'Low whisker' )
-    plt.axhline(min(x), color= 'b', linestyle = '--', label = 'Min' )
-    
+    plt.axhline(min(x), color= 'r', linestyle = '-', label = 'Min' )
+    plt.axhline(lw, color= 'b', linestyle = '--', label = 'Low whisker' )
     print (f"lower whisker = {lw}")
     print (f"q1 = {q1}")   
     print (f"q2 = {q2}")
