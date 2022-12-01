@@ -56,6 +56,7 @@ def mode(lst):
 	else:
 		return None
 
+# Variance
 
 def var(lst):
 	"""sample variance (n-1)"""
@@ -68,15 +69,15 @@ def var_p(lst):
     mu = mean(lst)
     return sum((x - mu)**2 for x in lst)/(len(lst))
 
-
+# Standard diviation:
 def std_p(lst):
     """ population stdev """
-    return sqrt(var_p(lst))
+    return np.sqrt(var_p(lst))
 
 
 def std(lst):
 	"""sample stdev"""
-	return sqrt(var(lst))
+	return np.sqrt(var(lst))
 
 
 def std_error(lst):
@@ -717,7 +718,15 @@ def sums_r(x, y):
 
 
 def r_xy(x, y):
-	"""Pearson Correlation coefficient"""
+	"""
+	Pearson Correlation coefficient:
+	    Correlation is the standardized form of covariance by dividing the covariance with SD of each variable under normal distribution assumption. Generally, we use ‘r’ as sample correlation coefficient and ‘ρ’ as population correlation coefficient. The Pearson correlation coefficient has following formula.
+	    r= cov(x,y)/(std(x)*std(y))
+However, here it is calculated by another formula.
+
+The Pearson correlation coefficient is also the covariance of standardized form of X and Y variables. The correlation coefficient is unit-less, being independent of the scale of variables and the range is between −1 and +1. The interpretation of the Pearson correlation coefficient was provided by Cohen [1]. He proposed a small, medium, and large effect size of r as 0.1, 0.3, and 0.5, respectively, and explained that the medium effect size represents an effect likely to be visible to the naked eye of a careful observer. Also he subjectively set a small effect size to be noticeably smaller than medium but not so small as to be trivial and set a large effect size to be the same distance above the medium as small was below it
+	
+	"""
 	n, ex, ey, exy, ex2, ey2 = sums_r(x, y)
 	return (n*exy - ex*ey)/(sqrt((n*ex2 - ex**2)*(n*ey2 - ey**2)))
 
@@ -752,6 +761,21 @@ def p_r(d, rxy):
 	t = sqrt((d)/((rxy**-2)-1))*i
 	return t, reject_null_h_t(t, d)
 
+# Covariance
+def cov(x,y):
+    '''
+    Covariance is defined as the expected value of variations of two variables from their expected values. More simply, covariance measures how much variables change together. The mean of each variable is used as reference and relative positions of observations compared to mean is important. Covariance is simply defined as the mean of multiplication of corresponding X and Y deviations from their mean. x - x_bar, y - y_bar.
+    
+    x= list of variables (numpy array)
+    y= another list of variables (np array)
+    
+    this finds the correlation if it is linear?
+    '''
+    x_bar=mean(x)
+    y_bar=mean(y)
+    
+    return ((sum((x-x_bar)*(y-y_bar)))/(len(x)-1))
+    
 
 
 ###CHI SQUARED###
