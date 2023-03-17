@@ -743,8 +743,8 @@ def reg(x, y):
 
 
 def r_2(r):
-	"""Pearson's Coeff of determination
-	indicating the amount of variance explained by the correlation
+	"""Pearson's Coeff of determination:
+	indicating the amount of variance of one variable to another one, in percentage
 	r: pearson corr coeff
 	"""
 	return r**2
@@ -758,14 +758,17 @@ def p_r(d, rxy):
 		"""
 	if rxy < 0:
 		i = -1
-	t = sqrt((d)/((rxy**-2)-1))*i
+	t = np.sqrt((d)/((rxy**-2)-1))*i
 	return t, reject_null_h_t(t, d)
+
 
 # Covariance
 def cov(x,y):
     '''
     Covariance is defined as the expected value of variations of two variables from their expected values. More simply, covariance measures how much variables change together. The mean of each variable is used as reference and relative positions of observations compared to mean is important. Covariance is simply defined as the mean of multiplication of corresponding X and Y deviations from their mean. x - x_bar, y - y_bar.
-    
+    if it is >0 positive correlarion between the series,,
+    <0 = negative correlation between the 2 series
+    =0: no specific correlation
     x= list of variables (numpy array)
     y= another list of variables (np array)
     
@@ -776,6 +779,20 @@ def cov(x,y):
     
     return ((sum((x-x_bar)*(y-y_bar)))/(len(x)-1))
     
+###PARTIAL CORRELATION###
+def p_corr(x,y,z):
+    ''' Partial correlation:
+     where the relationship between two variables is explored, but the impact of a third variable is removed from the relationship between the two. Sometimes that third variable is called a mediating or a confounding variable.
+     x, y, z = numpy arrays
+     r of x and y given z (confounding variables)
+    
+    '''
+    rxy= r_xy(x,y)
+    ryz= r_xy(y,z)
+    rxz = r_xy(x,z)
+    
+    return (rxy - (rxz * ryz))/(np.sqrt(1-(rxz)**2)*np.sqrt(1- (ryz**2)))
+  
 
 
 ###CHI SQUARED###
@@ -1083,43 +1100,89 @@ def boxplot_marks(d):
     plt.legend()
     plt.show()
     
-####Confusion Matrix####
+    
 
+####Confusion Matrix###
+"""
+_Actual____ ||___Predicted values:___|
+ _values:____||_Positive _|_Negative__|
+_Positive ___||___TP ____|____FN____|
+_Negative __||____FP ___|____TN ___|
+"""
 
-def accuracy(tp: int, fp: int, fn: int, tn: int) -> float:
-    """ 
-    the true results over the total results (percent of true results)
-    """
+def accuracy(tp, fp, fn, tn):
+    """ the true results over the total results (percent of true results)
+ => It is used if the data is balanced"""
     correct = tp + tn
-    total = tp + tn + fn + tn
+    total = tp + tn + fn + fp
     return correct/total
 
-def precision(tp: int, fp: int, fn: int, tn: int) -> float:
-    """
-    Positive Predictive Value: 
-    -- How much a positive result weights
-    -- The percentage of TRUE (positive) results to all positive 
-        results(FALSE AND TRUE)
-    
-    """
+
+def precision(tp, fp, fn, tn):
+ """
+ Precision (Positive Predictive Value)-Vertical metrics: 
+<<Predicted True positive over all predicted positive>>
+ -- How much a positive result weights
+ -- Correctly predicted as positive out of all positive predictes values.
+ *** The percentage of TRUE positive results to all PREDICTED positive results(FALSE AND TRUE) - (a measure in the predicted positive lane)
+ == If this value is higher than recall, that means the test is very selective of the prediction, highly specific, and most probably of low sensitivty. i.e. the test is more likely to miss on positive cases (high false negative). 
+and less likely to give false positive (low false positive)
+ => high specificity, low sensitivity.
+ >> Low FP, High FN
+ 
+"""
     return tp/(tp + fp)
 
-def recall(tp: int, fp: int, fn: int, tn: int)  -> float:
-    """
-    Sensitivity:
-    -- How much of the True results are picked by the test
-    -- Percentage of the True positive to all True results 
-        (false negative(the ones not picked by the test) and
-         the true positive the true ones picked positive)
 
-    """
-    return tp / (tp + fn)
+def recall(tp, fp, fn, tn):
+ """
+ Sensitivity/Recall/True positive rate(TPR):
+ <<Predicted True positive over all actual positive>>- !!Horizontal metric!!
+ -- How much of the True results are picked by the test as positive 
+-- Out of all the actual positives, how much are predicted as true correctly
+ -- Percentage of the True positive to all True results (false negative(the ones not picked by the test) and the true positive the true ones picked positive)
+ *** A measure in the Actual positive lane, TP over all the Actual positive 
+=>If recall is higher than precision, the test is very sensitive, and of low selction criteria. i.e. the false negative are low and false positive will be higher. The test tends to label more subjects as positive with higher tendency for wrong positive
+ >> High sensitivity and low specificty
+ >> High FP, Low FN
+ If the impact of FN is much higer than false positive 
+"""
+ return tp / (tp + fn)
+ 
+def specificity(tp, fp, fn, tn):
+ """
+ Correctly predicted negative out of all
+ actual negative values!!horizontal metric!!
+ <<Predicted True negative by test over all actual negative>>
+ True negatuve / Actual Negatives
+ 
+ """
+    return tn/(fp+tn)
+
+def error1(tp, fp, fn, tn):
+ """ 
+Type1 Error (False positive rate):
+ - FP (wrongly predicted positive) over All actual negative values
+ (1 - specificity)
+ """
+ return fp/(fp+tn)
+
+def f1_score(tp, fp, fn, tn):
+ p = precision(tp, fp, fn, tn)
+ r = recall(tp, fp, fn, tn)
+ 
+return 2*p*r/(p+r)
+ 
+def f_beta(tp, fp, fn, tn, beta):
+ """
+ F beta score:
+ if both FP and FN are important use beta=1
+ if minimizing FP is important decrease beta value,
+ if mini FN is the goal increase beta
+ """
+ p=precision(tp, fp, fn, tn)
+ r=recall(tp,fp,fn,tn)
+ return ((1+beta)*2*p*r)/((beta*2*r)+p)
 
 
-def f1_score(tp: int, fp: int, fn: int, tn: int) -> float:
-    p = precision(tp, fp, fn, tn)
-    r = recall(tp, fp, fn, tn)
-    
-    return 2*p*r/(p+r)
-    
 
