@@ -1112,7 +1112,8 @@ _Negative __||____FP ___|____TN ___|
 
 def accuracy(tp, fp, fn, tn):
     """ the true results over the total results (percent of true results)
- => It is used if the data is balanced"""
+ => It is used if the data is balanced
+"""
     correct = tp + tn
     total = tp + tn + fn + fp
     return correct/total
@@ -1137,7 +1138,8 @@ and less likely to give false positive (low false positive)
 def recall(tp, fp, fn, tn):
  """
  Sensitivity/Recall/True positive rate(TPR):
- <<Predicted True positive over all actual positive>>- !!Horizontal metric!!
+ <<Predicted True positive over all actual positive>>
+- !!Horizontal metric!!
  -- How much of the True results are picked by the test as positive 
 -- Out of all the actual positives, how much are predicted as true correctly
  -- Percentage of the True positive to all True results (false negative(the ones not picked by the test) and the true positive the true ones picked positive)
@@ -1152,7 +1154,7 @@ def recall(tp, fp, fn, tn):
 def specificity(tp, fp, fn, tn):
  """
  Correctly predicted negative out of all
- actual negative values!!horizontal metric!!
+ actual negative values!!horizontal metric!!
  <<Predicted True negative by test over all actual negative>>
  True negatuve / Actual Negatives
  
